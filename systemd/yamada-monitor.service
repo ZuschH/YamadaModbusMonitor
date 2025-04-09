@@ -1,0 +1,10 @@
+[Unit]
+Description=Yamada Modbus Monitor Service
+After=network.target
+
+[Service]
+ExecStart=/opt/YamadaDobby/modbus-monitor
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
