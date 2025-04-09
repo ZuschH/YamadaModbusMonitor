@@ -3,7 +3,6 @@ name: Build & Package
 on:
   push:
     branches: [ main ]
-  pull_request:
   release:
     types: [created]
 
@@ -31,7 +30,7 @@ jobs:
         cp build/*.deb output/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3.0.2
+      uses: actions/upload-artifact@v2
       with:
         name: yamada-build-artifacts
         path: output/
