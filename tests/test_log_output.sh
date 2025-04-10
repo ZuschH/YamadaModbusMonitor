@@ -13,7 +13,7 @@ rm -f /tmp/testlog.csv
 
 # Zeitstempel rausstrippen und vergleichen
 awk -F',' 'NR==1 {for(i=2;i<=NF;i++) printf $i (i<NF?",":"\n")}' /tmp/testlog.csv > /tmp/testlog_stripped.csv
-cut -d',' -f2- tests/expected_output/testlog.csv > /tmp/testlog_expected_stripped.csv
+awk -F',' 'NR==1 {for(i=2;i<=NF;i++) printf $i (i<NF?",":"\n")}' tests/expected_output/testlog.csv > /tmp/testlog_expected_stripped.csv
 
 echo "[CHECK] Comparing CSV content without timestamps..."
 if diff /tmp/testlog_stripped.csv /tmp/testlog_expected_stripped.csv; then
