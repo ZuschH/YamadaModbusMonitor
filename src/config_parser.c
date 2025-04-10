@@ -1,43 +1,39 @@
-typedef struct {
-    struct {
-        char port[64];
-        int baudrate;
-        int databits;
-        int stopbits;
-        char parity[8];
-        char mode[8];
-        char protocol[16];
-    } serial;
+#include "config_parser.h"
+#include "ini.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-    struct {
-        int timeout_ms;
-        bool crc_check;
-        bool log_invalid_crc;
-    } modbus;
+static int handler(void* user, const char* section, const char* name, const char* value) {
+    config_t* config = (config_t*)user;
 
-    struct {
-        char log_dir[128];
-        char log_format[16];
-        bool rotate;
-        int max_file_size_kb;
-    } logging;
+    #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
 
-    struct {
-        bool enable;
-        bool auto_launch;
-        int refresh_interval_ms;
-    } ui;
+    if (MATCH("serial", "port")) {
+        strncpy(config->serial_port, value, sizeof(config->serial_port)-1);
+    } else if (MATCH("serial", "baudrate")) {
+        config->baudrate = atoi(value);
+    } else if (MATCH("modbus", "poll_interval_ms")) {
+        config->poll_interval_ms = atoi(value);
+    } else if (MATCH("modbus", "timeout_ms")) {
+        config->timeout_ms = atoi(value);
+    } else if (MATCH("logging", "log_dir")) {
+        strncpy(config->log_dir, value, sizeof(config->log_dir)-1);
+    } else if (MATCH("logging", "log_format")) {
+        strncpy(config->log_format, value, sizeof(config->log_format)-1);
+    } else if (MATCH("network", "ssh_target")) {
+        strncpy(config->ssh_target, value, sizeof(config->ssh_target)-1);
+    } else if (MATCH("network", "ssh_port")) {
+        config->ssh_port = atoi(value);
+    } else if (MATCH("network", "ssh_user")) {
+        strncpy(config->ssh_user, value, sizeof(config->ssh_user)-1);
+    } else {
+        return 0; /* unknown key */
+    }
+    return 1;
+}
 
-    struct {
-        char ssh_target[128];
-        int ssh_port;
-        bool rsync_enabled;
-        int sync_interval_sec;
-    } network;
-
-    struct {
-        bool run_as_daemon;
-        char pid_file[128];
-    } service;
-
-} MonitorConfig;
+int load_config(const char* filename, config_t* config) {
+    memset(config, 0, sizeof(*config));
+    return ini_parse(filename, handler, config);
+}
