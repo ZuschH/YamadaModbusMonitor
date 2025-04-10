@@ -3,5 +3,5 @@ Version: 1.0-1
 Section: utils
 Priority: optional
 Architecture: armhf
-Maintainer: ZuschH <your@email.com>
+Maintainer: ZuschH <heitmann@yamadadobby.com>
 Description: High-performance Modbus monitor with dialog interface
