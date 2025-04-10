@@ -29,9 +29,25 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## v1.0.0 – Initial Stable Release
+- Modular architecture: INI config, systemd support, dialog UI prepared
+- `--menu`, `--version`, `--easteregg` CLI flags
+- DEB installation package with persistent service
+
 ## [Unreleased]
 
 ## v1.1.0 (in progress)
+
+- [x] CSV logging implemented with TX/RX, timestamp, function code, and CRC status
+- [x] `log_writer.c/.h` created with `log_csv_frame()` function
+- [x] `main.c` extended with `--logtest` command for CSV test output
+- [ ] Real Modbus CRC decoder and TX/RX parsing
+- [ ] Live config changes via --reconfigure
+- [ ] Human/Machine dual log output (ASCII + binary)
+- [ ] Easter Egg rotation (optional randomness)
+- [ ] Structured logging for diagnostic replay
+
+
 [planned]
 
 - [ ] CSV log file structure refactor
