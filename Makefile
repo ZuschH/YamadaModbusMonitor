@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-O2 -Wall
-SRC=src/main.c src/dialog_ui.c src/config_parser.c src/modbus_config.c src/ini.c
+SRC=src/main.c src/dialog_ui.c src/config_parser.c src/modbus_config.c src/ini.c src/log_writer.c
 OBJ=$(SRC:.c=.o)
 BIN=modbus-monitor
 PREFIX=/opt/YamadaDobby
