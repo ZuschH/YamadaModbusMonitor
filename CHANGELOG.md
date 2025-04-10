@@ -30,6 +30,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ---
 
 ## [Unreleased]
+
+## v1.1.0 (in progress)
+[planned]
+
+- [ ] CSV log file structure refactor
+- [ ] Real Modbus CRC decoder and TX/RX parsing
+- [ ] Live config changes via --reconfigure
+- [ ] Human/Machine dual log output (ASCII + binary)
+- [ ] Easter Egg rotation (optional randomness)
+
 ### Planned
 - Condition monitoring with alert threshold logic
 - Telegram decoding for Toshiba/Daikin/Fuji formats
