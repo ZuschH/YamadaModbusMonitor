@@ -12,7 +12,7 @@ rm -f /tmp/testlog.csv
 ./build/modbus-monitor --logtest
 
 # Zeitstempel rausstrippen und vergleichen
-cut -d',' -f2- /tmp/testlog.csv | head -n 1 > /tmp/testlog_stripped.csv
+awk -F',' 'NR==1 {for(i=2;i<=NF;i++) printf $i (i<NF?",":"\n")}' /tmp/testlog.csv > /tmp/testlog_stripped.csv
 cut -d',' -f2- tests/expected_output/testlog.csv > /tmp/testlog_expected_stripped.csv
 
 echo "[CHECK] Comparing CSV content without timestamps..."
