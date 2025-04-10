@@ -30,7 +30,7 @@ jobs:
         cp build/*.deb output/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@8b9403d0e505c0f6de3b3bb704c0be258d4e4f83
+      uses: actions/upload-artifact@v3
       with:
         name: yamada-build-artifacts
         path: output/
