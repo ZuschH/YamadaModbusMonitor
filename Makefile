@@ -1,14 +1,15 @@
 CC=gcc
 CFLAGS=-O2 -Wall
-SRC=$(wildcard src/*.c)
+SRC=src/main.c src/dialog_ui.c src/config_parser.c src/modbus_config.c src/ini.c
 OBJ=$(SRC:.c=.o)
 BIN=modbus-monitor
 PREFIX=/opt/YamadaDobby
 
-all: $(BIN)
+all: build/$(BIN)
 
-$(BIN): $(OBJ)
-	$(CC) -o build/$(BIN) $(OBJ)
+build/$(BIN): $(OBJ)
+	mkdir -p build
+	$(CC) -o $@ $(OBJ)
 
 install:
 	install -d $(PREFIX)
@@ -27,3 +28,5 @@ deb:
 	mkdir -p build/yamada-modbus-monitor_1.0-1_armhf/opt/YamadaDobby
 	cp build/$(BIN) build/yamada-modbus-monitor_1.0-1_armhf/opt/YamadaDobby/
 	dpkg-deb --build build/yamada-modbus-monitor_1.0-1_armhf
+
+.PHONY: all install clean
