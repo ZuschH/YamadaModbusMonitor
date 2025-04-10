@@ -22,3 +22,6 @@ else
   echo "❌ CSV output mismatch!" >&2
   exit 1
 fi
+
+# testlog output check - updated for executable fix
+
