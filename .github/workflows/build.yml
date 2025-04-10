@@ -31,8 +31,11 @@ jobs:
 
     - name: Run CLI/Output tests
       run: |
+        echo "[DEBUG] Current dir: $(pwd)"
+        echo "[DEBUG] Files in tests/:"
+        ls -l tests/
         chmod +x tests/*.sh
-        tests/test_log_output.sh
+        ./tests/test_log_output.sh
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
