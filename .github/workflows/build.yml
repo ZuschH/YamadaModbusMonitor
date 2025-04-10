@@ -29,6 +29,11 @@ jobs:
         mkdir -p output
         cp build/*.deb output/
 
+    - name: Run CLI/Output tests
+      run: |
+        chmod +x tests/*.sh
+        tests/test_log_output.sh
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
