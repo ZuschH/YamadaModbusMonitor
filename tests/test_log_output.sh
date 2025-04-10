@@ -11,17 +11,14 @@ echo "[TEST] CSV logging via --logtest..."
 rm -f /tmp/testlog.csv
 ./build/modbus-monitor --logtest
 
-# Zeitstempel rausstrippen und vergleichen
-awk -F',' 'NR==1 {for(i=2;i<=NF;i++) printf $i (i<NF?",":"\n")}' /tmp/testlog.csv > /tmp/testlog_stripped.csv
-awk -F',' 'NR==1 {for(i=2;i<=NF;i++) printf $i (i<NF?",":"\n")}' tests/expected_output/testlog.csv > /tmp/testlog_expected_stripped.csv
-
-echo "[CHECK] Comparing CSV content without timestamps..."
-if diff /tmp/testlog_stripped.csv /tmp/testlog_expected_stripped.csv; then
-  echo "✅ CSV structure (excluding timestamps) matches expected."
+echo "[CHECK] Comparing entire CSV content (incl. timestamp)..."
+if diff /tmp/testlog.csv tests/expected_output/testlog.csv; then
+  echo "✅ Full CSV content matches expected."
 else
-  echo "❌ CSV output mismatch!" >&2
+  echo "❌ CSV mismatch!" >&2
+  echo "--- Expected:"
+  cat tests/expected_output/testlog.csv
+  echo "--- Got:"
+  cat /tmp/testlog.csv
   exit 1
 fi
-
-# testlog output check - updated for executable fix
-
