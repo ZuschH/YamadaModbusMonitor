@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
 #include "dialog_ui.h"
+#include "log_writer.h"
 
 void print_version() {
     printf("Yamada Modbus Monitor v1.0.0\n");
@@ -33,16 +33,25 @@ int main(int argc, char *argv[]) {
             return dialog_show_menu("/var/log/YamadaDobby/modbus.log");
         } else if (strcmp(argv[1], "--reconfigure") == 0 && argc == 4) {
             printf("Reconfiguring %s to %s...\n", argv[2], argv[3]);
-            // Implement live config update if desired
+            return 0;
+        } else if (strcmp(argv[1], "--logtest") == 0) {
+            FILE* f = fopen("/tmp/testlog.csv", "a");
+            if (!f) {
+                perror("fopen");
+                return 1;
+            }
+            uint8_t sample_data[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0x65, 0xCB};
+            log_csv_frame(f, "TX", 1, 0x03, sample_data, sizeof(sample_data), 1, 0);
+            fclose(f);
+            printf("Test frame logged to /tmp/testlog.csv\n");
             return 0;
         } else {
             printf("Unknown option: %s\n", argv[1]);
-            printf("Use --version, --easteregg, --menu, or --reconfigure\n");
+            printf("Use --version, --easteregg, --menu, --logtest, or --reconfigure\n");
             return 1;
         }
     } else {
-        printf("Usage: %s [--version | --easteregg | --menu | --reconfigure key value]\n", argv[0]);
+        printf("Usage: %s [--version | --easteregg | --menu | --logtest | --reconfigure key value]\n", argv[0]);
     }
     return 0;
 }
-
