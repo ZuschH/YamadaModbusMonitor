@@ -11,14 +11,18 @@ echo "[TEST] CSV logging via --logtest..."
 rm -f /tmp/testlog.csv
 ./build/modbus-monitor --logtest
 
-echo "[CHECK] Comparing entire CSV content (incl. timestamp)..."
-if diff /tmp/testlog.csv tests/expected_output/testlog.csv; then
-  echo "✅ Full CSV content matches expected."
+# Timestamp (Spalte 1) entfernen – robust auf beiden Seiten
+tail -n 1 /tmp/testlog.csv | cut -d',' -f2- > /tmp/testlog_stripped.csv
+cut -d',' -f2- tests/expected_output/testlog.csv > /tmp/testlog_expected_stripped.csv
+
+echo "[CHECK] Comparing CSV content (timestamp-agnostic)..."
+if diff /tmp/testlog_stripped.csv /tmp/testlog_expected_stripped.csv; then
+  echo "✅ CSV content matches expected (ignoring timestamp)."
 else
   echo "❌ CSV mismatch!" >&2
   echo "--- Expected:"
-  cat tests/expected_output/testlog.csv
+  cat /tmp/testlog_expected_stripped.csv
   echo "--- Got:"
-  cat /tmp/testlog.csv
+  cat /tmp/testlog_stripped.csv
   exit 1
 fi
